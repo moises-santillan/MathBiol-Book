@@ -1,0 +1,133 @@
+# 8. Logistic Model 
+ 
+
+**Abstract**
+
+This chapter explores the **logistic growth model**, a cornerstone of theoretical ecology that introduces density-dependent feedback to resolve the physical limitations of exponential expansion. Beginning with the historical transition from Malthus’s conceptual warnings on resource scarcity to **Verhulst’s** first quantitative formulation, we derive the logistic differential equation and its explicit closed-form solution. We demonstrate that the model’s hallmark is its long-term convergence to a stable **carrying capacity ($K$)**, a global attractor independent of initial population size. Through a dual approach of **local stability analysis** and **graphical methods**, we characterize the system's fixed points and classify the resulting growth trajectories—identifying the transition from sigmoidal (S-shaped) curves to monotonic convergence. By distilling complex ecological constraints into a parsimonious mathematical framework, the logistic model serves as a fundamental pedagogical tool for understanding how nonlinear feedbacks govern the stability and regulation of real-world biological populations.
+
+## Introduction
+While the exponential growth model provides a simple and mathematically tractable framework for studying populations over short time periods, it has significant limitations when extrapolated over long timescales. Most notably, the model predicts unconstrained population expansion leading to infinite size, which is not feasible in reality. All natural populations are bound by finite resources in their environment. The exponential model also ignores factors like resource competition and carrying capacity effects that act to slow growth as the population approaches the limits of its habitat. As a result, the model cannot realistically depict long-term population behavior or stability. For populations existing in a closed ecological system with density-dependent influences, another type of population model is needed that incorporates limitations on growth from resource limitations and crowding effects. This will allow an investigation of population regulation and equilibrium conditions. The development of such a model, which involves including density-dependent feedback in the growth term, is necessary to more accurately represent population dynamics over long periods aligned with biological timescales.
+
+## A Brief Historical Review
+Thomas Malthus was one of the earliest scholars to study population dynamics. In his 1798 treatise *An Essay on the Principle of Population*, Malthus hypothesized that human populations have an inherent capacity to grow exponentially if unchecked by outside forces. This is because populations can increase geometrically through reproduction. In contrast, he argued that the food resources required to support growing populations only increase in an arithmetic progression over time. As populations grow exponentially yet resources increase linearly, Malthus recognized that individuals would inevitably come into competition for limiting resources like food, space, and other necessities of life. This competition, he proposed, serves to slow population growth from its unchecked exponential rate down to a level sustainable given the available resources. Malthus' ideas introduced the concept that populations are regulated by external factors related to resource availability and by the scarcity and struggle for existence that arises due to overpopulation. His insights formed the basis for later formal mathematical models of population dynamics.
+
+While Malthus recognized that populations cannot grow exponentially indefinitely, he did not provide a mathematical model to describe how growth becomes limited over time. It was the Belgian mathematician Pierre Verhulst who first developed an explicit equation incorporating this regulation mechanism. In 1838, Verhulst modified the simple exponential growth model based on Malthus' arguments about competition for resources. He proposed adding a negative feedback term that increases in proportion to the population size, representing the growing scarcity and resultant effect on per capita growth rate as the population approaches the environment's carrying capacity.
+
+## The Logistic Model
+We begin by recalling the differential equation that governs exponential population growth:
+$$
+\frac{dN}{dt} = \alpha N,
+$$
+
+where $\alpha$ is a constant growth rate parameter. Verhulst proposed modifying this model by substituting parameter $\alpha$ with a decreasing function of the population size $N$, denoted $\alpha(N)$. Specifically, he proposed a linear decay function of the form:
+$$
+\alpha(N) = r\left(1 - \frac{N}{K}\right),
+$$
+
+where $r$ represents the intrinsic per capita growth rate in the absence of density-dependent effects. Meanwhile, $K$ denotes the environment's biological carrying capacity; the maximum sustainable population size given resource constraints. This negative feedback term grows proportionally as $N$ approaches $K$, introducing density-dependent regulation into the exponential growth formulation. Verhulst's ingenious substitution of a variable growth rate function was a landmark development that produced the first quantitative model embodying Malthus' concept of self-limitation through resource competition.
+
+Through this modification, Verhulst produced the following nonlinear ordinary differential equation to govern population dynamics:
+```{math}
+:label: eq:08.01
+\frac{dN}{dt} = rN\left(1 - \frac{N}{K}\right).
+```
+
+Verhulst named the solution to this differential equation the "logistic function". By extension, the overall model is commonly referred to as the "logistic model" of population growth. However, it is also appropriately termed the "Verhulst model"
+
+We can solve the logistic differential equation—Eq. {eq}`eq:08.01`—using variable transformations. First, introduce the change of variable $x = 1/N$. This transforms Eq. {eq}`eq:08.01` to:
+$$
+\frac{dx}{dt} = rx\left(\frac{1}{K} - x\right).
+$$
+
+Next, define the variable $y = x - 1/K$, yielding:
+$$
+\frac{dy}{dt} = -ry.
+$$
+
+This has the solution $y(t) = y_0e^{-rt}$, where $y_0$ is the initial value. Transforming back through the steps, we arrive at the solution for the original variable $N$:
+```{math}
+:label: eq:08.02
+N(t) = \left[\frac{1}{K} + \left(\frac{1}{N_0} - \frac{1}{K}\right)e^{-rt}\right]^{-1}.
+```
+
+Through judicious variable substitutions, we have derived an explicit closed-form solution to the logistic differential equation governing population dynamics. 
+
+Eq. {ref}`eq:08.02` is the well known logistic function. Consider the characteristics of this solution. The first term inside the brackets, $1/K$, represents the asymptotic carrying capacity. As time increases, the exponential term $e^{-rt}$ monotonically decays to zero. Therefore, in the limit of large time, the population $N$ will approach the value:
+$$
+\lim_{t\to\infty} N = K.
+$$
+
+This shows that regardless of the initial population $N_0$, the solution will always converge to the environmental carrying capacity $K$. Physically, this makes sense; as time progresses, density-dependent effects will gradually dampen the growth rate until it balances perfectly with mortality to establish an equilibrium at the maximum sustainable size. The timescale to reach this steady state depends on the intrinsic growth rate $r$, but the ultimate attractor is always $K$. Therefore, the logistic model comprehensively captures the self-regulation of populations towards their local resource limits envisioned by Malthus.
+
+## Local Stability of Steady States
+While we derived an analytical solution for the logistic equation in the previous section, such closed-form expressions are rare for more complex nonlinear systems. However, even when an exact solution is unattainable, we can extract profound qualitative insights by examining the system’s steady states and their local stability. While analytical solutions provide a specific map of trajectories over time, stability analysis offers a rigorous framework for predicting long-term behavior. In this section, we adopt this perspective—identifying the logistic model’s fixed points and applying linearization to determine whether the system naturally recovers from, or diverges after, small perturbations.
+
+To perform a local stability analysis, we first express the logistic differential equation—Eq. {eq}`eq:08.01`—in the general autonomous form:
+
+$$\frac{dN}{dt} = f(N),$$
+
+where the growth rate function is defined as:
+$$f(N) = rN \left(1 - \frac{N}{K}\right)$$
+
+The steady states (or fixed points) of the system occur where the rate of change is zero ($f(N) = 0$). Setting the growth function to zero and solving for $N$ yields two distinct fixed points:
+* $N_1^* = 0$: The trivial equilibrium (extinction).
+* $N_2^* = K$: The non-trivial equilibrium (carrying capacity).
+
+The stability of these points is determined by the linearization of the system. We calculate the derivative of $f(N)$ to determine the slope of the growth function at each equilibrium:
+
+$$f'(N) = \frac{d}{dN} \left( rN - \frac{rN^2}{K} \right) = r - \frac{2rN}{K}.$$
+
+By evaluating this derivative at each fixed point, we can classify their stability based on the sign of the result (assuming $r > 0$).
+
+At $N_1^* = 0$: 
+$$f'(0) = r$$
+
+Because $f'(0) > 0$, the slope is positive. This indicates that small perturbations will grow exponentially away from zero, making $N_1^*$ an unstable fixed point.
+
+At $N_2^* = K$: 
+$$f'(K) = r - 2r = -r$$
+
+Because $f'(K) < 0$, the slope is negative. This indicates that small perturbations will decay over time as the population returns to equilibrium, making $N_2^*$ a locally stable fixed point.
+
+```{figure} Figures/fig-08.01.png
+:name: fig:08.01
+
+Graphical analysis of fixed points and stability in the logistic growth model. This figure shows the growth rate function $f(N)=rN(1-N/K)$. The two roots of this function, where it intersects the horizontal axis, are the fixed points (steady state solutions): $N_1^*=0$ and $N_2^*=K$. Local stability is determined by the slope of $f(N)$ at each fixed point. At $N_1^*=0$, the slope is positive indicating nearby trajectories will diverge over time. Therefore, $N_1^*$ denotes an unstable fixed point, represented by an open circle. In contrast, the slope of $f(N)$ is negative at the carrying capacity $N_2^*=K$. Thus, small perturbations will contract back towards the fixed point. This characterizes $N_2^*$ as a stable steady state solution, shown as a filled circle.
+```
+
+The analytical results can be interpreted geometrically by examining the graph of the growth rate function, $f(N) = rN(1 - N/K)$. As shown in Fig. {ref}`fig:08.01`, the fixed points $N_1^* = 0$ and $N_2^* = K$ are the roots where the parabola intersects the horizontal axis. 
+
+In this graphical framework, local stability is determined by the sign of the function on either side of a fixed point. At $N_1^* = 0$, the function is positive for small $N$, indicating that the population will increase and move away from the origin; thus, $N_1^*$ is an **unstable node** (represented by an open circle). Conversely, at the carrying capacity $N_2^* = K$, the function is positive for $N < K$ and negative for $N > K$. This ensures that trajectories from both directions converge toward $K$, characterizing it as a **locally stable steady state** (represented by a filled circle).
+
+Beyond stability, this graphical analysis reveals the qualitative "shape" of the population's path. Because $f(N)$ is a concave-down parabola with a peak at $N = K/2$, we can predict two distinct growth behaviors:
+
+* **Sigmoidal Growth ($N_0 < K/2$):** If a population starts below half the carrying capacity, it enters a region where the growth rate is increasing ($f'(N) > 0$). It accelerates until it hits the midpoint $K/2$, after which the rate begins to decrease ($f'(N) < 0$), resulting in the characteristic S-shaped sigmoid curve.
+* **Decelerating Convergence ($N_0 > K/2$):** For populations starting above the midpoint, the growth rate is already in decline. These populations decelerate immediately as they approach $K$. If $N_0 > K$, the growth rate is negative, and the population declines monotonically toward the carrying capacity.
+
+By examining the slope and curvature of $f(N)$, we can thus predict the inflection points and long-term fates of the system without ever solving the differential equation.
+
+```{figure} Figures/fig-08.02.png
+:name: fig:08.02
+
+Qualitative trajectories of the logistic solution for varying initial conditions. This figure graphically depicts the logistic function given by Eq. {eq}`eq:08.02
+```
+
+The qualitative insights derived from the growth rate function, $f(N)$, are directly reflected in the time-dependent behavior of the system. By plotting the analytical solution—Eq. {eq}eq:08.02—over time for various initial conditions $N_0$, we can visualize the emergent dynamics of the model (Fig. {ref}fig:08.02). For populations initialized below half the carrying capacity ($N_0 < K/2$), the trajectories exhibit an inflection point at $N = K/2$, resulting in the classic sigmoidal (S-shaped) growth curve. Conversely, for initial conditions above this threshold ($N_0 > K/2$), the growth rate is strictly decreasing, leading to monotonic convergence toward the carrying capacity $K$.
+
+​The alignment between the analytical solutions in Fig. {ref}fig:08.02 and the stability analysis in Fig. {ref}fig:08.01 confirms a fundamental principle of dynamical systems: local behavior near fixed points often dictates the global qualitative fate of the system. This cross-validation demonstrates that linearization and graphical analysis are not merely approximations; they are powerful diagnostic tools that provide a comprehensive understanding of population regulation. 
+
+## Discussion
+The logistic equation, despite its minimalist structure, captures the essential mechanics of real-world population dynamics. By introducing a nonlinear, density-dependent feedback loop, the model mathematically simulates the physical constraints of finite resources and intraspecific competition. This results in the carrying capacity behavior observed across nearly all biological scales—from the proliferation of microbial colonies in a petri dish to the stabilization of ungulate populations in the wild. The model’s enduring success in mathematical biology stems from its ability to distill complex ecological pressures into fundamental processes, offering a universal baseline for understanding population outbreaks, collapses, and eventual stabilization.
+
+​While analytical solutions provide a comprehensive "map" of a population's path over time, they are often an unattainable luxury in the study of more complex nonlinear systems. This is where local stability analysis proves its worth as a generalizable and robust diagnostic tool. By linearizing the system near its fixed points, we can classify the long-term qualitative fate of any trajectory using rigorous mathematical criteria. As demonstrated by the logistic model, investigating the local properties of an equilibrium can correctly predict the global behavior of the entire system. Even when a closed-form solution remains elusive, studying the stability of steady states offers a powerful lens through which we can understand the emergent complexity and points of balance in both natural and engineered environments.
+
+## Exercises
+1. Find the steady states of the following variation of the logistic model:
+    $$
+    \frac{dN}{dt} = r N \left( 1 - \frac{N}{K} \right) - \delta.
+    $$
+
+    Analyze the stability of these steady states and discuss the implications of your findings in comparison to the behavior of the original logistic model. Consider how the additional term \(-\delta\) affects population dynamics and equilibrium points.
+2. Consider the following differential equation $\dot{x} = a x - b x^2$. Find all the fixed points and classify their stability. Sketch the plot of x(t) for various initial conditions.
+3. The growth of cancerous tumors can be modeled by the Gompertz law: $\dot{N} = -aN\ln(bN)$, where $N$ is proportional to the number of cells in the tumor, while $a,b>0$ are model parameters. Find the steady state and classify their stability. Interpret $a$ and $b$ biologically. Sketch the plots of $N(t)$ for various initial conditions.
+  
