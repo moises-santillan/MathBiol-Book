@@ -1,0 +1,121 @@
+# 16. Simplified SIR Model
+
+**Abstract**
+
+This chapter develops and analyzes a simplified version of the classic SIR compartmental model. The goal is to illuminate the intrinsic transmission-recovery dynamics that govern the short-term propagation of an infection during the initial stages of an outbreak, when demographic effects have a negligible impact. The model is formulated as a system of ordinary differential equations, and analytical techniques are employed to determine key characteristics of outbreak behavior as functions of epidemiological parameters, such as the basic reproduction number. Stability analysis reveals threshold conditions for outbreak potential based on this metric, while linearization allows for the quantification of initial growth or decay trajectories. Further exploration of the governing equations provides insights into the forces shaping the temporal prevalence profiles over the course of an epidemic. By focusing on the fundamental transmission-recovery dynamics, this simplified SIR model offers a valuable tool for understanding the early dynamics of an outbreak, independent of complicating demographic factors.
+
+## Introduction
+Outbreaks of infectious diseases can have major public health and socioeconomic impacts. It is therefore important to understand the dynamics of disease spread and characterize factors determining outbreak size and duration. The classic SIR compartmental model provides a useful framework for modeling infection transmission at the population level. It incorporates demographic fluxes due to births and deaths. However, in many outbreak settings, the timescales over which infections and recoveries occur are much faster than demographic turnover.
+
+As such, during the initial spread and peak of an outbreak, the influence of births and deaths can be neglected as a first approximation. In this chapter, we develop and analyze a simplified version of the SIR model that ignores demographic fluxes. This allows us to focus specifically on the short-term infection dynamics over the course of an outbreak. Understanding how the basic infection and recovery processes drive temporal changes in disease prevalence at this timescale is highly relevant from a public health perspective.
+
+Key determinants of outbreak size and duration need to be identified to effectively target intervention strategies. The simplified SIR model provides a tractable framework for characterizing the influence of transmission rate, recovery rate, and other epidemiological parameters on short-term infection dynamics. Analytical insights will be used to explore model predictions and make connections to real-world outbreak settings. Overall, this analysis aims to complement the full demographic SIR model by illuminating infection spread mechanisms operating over a distinct, epidemiologically important short-term timescale.
+
+## Model development
+We develop a compartmental model to describe the transmission dynamics of an infectious disease within a closed population. The population is divided into three mutually exclusive health states: susceptible ($S$); infected ($I$); and recovered ($R$). Individuals transition between states according to the following processes:
+1. Susceptible individuals contract the infection upon contact with infectious individuals. The per capita rate of new infections is proportional to the product of the number of susceptible and infectious individuals, with proportionality constant $\beta$ known as the infection rate.
+2. Infected individuals recover at a constant per capita recovery rate $\gamma$.
+3. In the absence of demographic factors like birth, death, immigration or emigration, the total population size $N=S+I+R$ remains fixed.
+
+These assumptions allow formulation of the following system of ordinary differential equations:
+\begin{align*}
+\frac{dS}{dt}  &= -\beta SI, \\
+\frac{dI}{dt}  &= \beta SI - \gamma I, \\
+\frac{dR}{dt}  &= \gamma I. 
+\end{align*}
+
+The total population size is non-dimensionalized to $1$ by defining normalized variables $s=S/N$, $i=I/N$, $r=R/N$ and a rescaled time $t'=\gamma t$. In terms of these, the equations become:
+``` {math}
+:label: eq:16.04
+\begin{align}
+\frac{ds}{dt'}  &= -R_0 s i, \\
+\frac{di}{dt'}  &= R_0 s i - i, \\
+\frac{dr}{dt'}  &= i, 
+\end{align}
+```
+where $R_0=\beta N/\gamma$ denotes the basic reproductive number, defined as the average number of secondary infections produced by an infectious individual in a fully susceptible population. In subsequent sections, we analyze this system to characterize outbreak dynamics based on $R_0$.
+
+## Analysis of Disease-Free Equilibria
+
+We begin by identifying the steady-state solutions for the non-dimensionalized system in Eq. {eq}`eq:16.04`. An equilibrium occurs when all time derivatives vanish ($\dot{s} = \dot{i} = \dot{r} = 0$). This condition is met if, and only if, the infectious fraction is zero ($i = 0$), regardless of the specific values of $s$ and $r$. Consequently, the system possesses a **continuum of disease-free equilibria (DFE)** defined by:
+
+$$s^* = \eta, \quad i^* = 0, \quad r^* = 1 - \eta$$
+
+Here, the parameter $\eta \in [0, 1]$ represents the the proportion of the population that is susceptible when the disease is introduced.
+
+To assess whether a single infected individual will trigger an outbreak, we evaluate the Jacobian matrix $\mathbf{J}$ at a general DFE point $(\eta, 0, 1-\eta)$:
+
+```{math}
+:label: eq:16.07
+\mathbf{J}(\eta,0,1-\eta) = 
+\begin{bmatrix}
+0 & -R_0\eta & 0 \\
+0 & R_0\eta-1 & 0 \\
+0 & 1 & 0
+\end{bmatrix}
+
+The eigenvalues of this matrix are $\lambda_1 = R_0\eta - 1$ and $\lambda_2 = \lambda_3 = 0$. The zero eigenvalues indicate neutral stability along the $s$ and $r$ dimensions; if we shift the number of susceptible or recovered individuals in the absence of the disease, the system remains at the new mixture.
+
+The system's behavior is dictated by the first eigenvalue, $\lambda_1$
+* 
+
+The eigenvalues are $\lambda_1=R_0\eta-1$, $\lambda_2=\lambda_3=0$. Since $\lambda_2=\lambda_3=0$ variations in $s$ and $r$ (the directions determined by $\vec{v}_2$ and $\vec{v}_3$) decay at rate zero. That is, the DFE is neutrally stable to perturbations in these directions. However, perturbations in the direction of $\vec{v}_1$ decay for $R_0\eta<1$ but grow for $R_0\eta>1$, indicating stability below epidemic threshold and instability above. When the entire population is susceptible $(\eta=1)$, stability requires $R_0<1$. Therefore, an outbreak occurs if $R_0>1$, allowing small infectious perturbations to amplify rather than decay.
+
+To further characterize outbreak dynamics, we analyze the behavior near the DFE. Considering the Jacobian in Equation {eq}`eq:16.07`, linearization of Equations {eq}`eq:16.04` yields:
+\begin{align*}
+\frac{d\delta s}{dt'} &= -R_0 \delta i, \\
+\frac{d\delta i}{dt'} &= (R_0\eta-1)\delta i, \\
+\frac{d\delta r}{dt'} &= \delta i,
+\end{align*}
+
+where $\delta s=s-s^*$, etc. Taking $s^*=\eta$, $i^*=0$, $r^*=1-\eta$, this implies:
+
+\begin{align*}
+\frac{ds}{dt'} &= \eta - R_0i, \\
+\frac{d\delta i}{dt'} &= (R_0\eta-1)i, \\
+\frac{d\delta r}{dt'} &= (1-\eta)+i.
+\end{align*}
+
+These equations further imply that introduction of infected individuals causes a decrease in susceptibles and increase in recoveries. On the other hand, the behavior of $i(t)$ depends on the sign of $R_0\eta-1$: for $R_0\eta<1$, infections decay, while for $R_0\eta>1$, outbreaks ensue as infections amplify initially.
+
+Outbreaks cannot persist indefinitely, however, as implied by Equation {eq}`eq:16.04`: infections arise from contacts between $s$ and $i$, but are lost through recoveries at rate $i$. As $s$ decreases while $i$ increases over time, recoveries will eventually dominate, terminating the outbreak at a new DFE with $R_0\eta'<1$.
+
+## The Effective Reproduction Number ($R_e$)
+
+While the basic reproduction number ($R_0$) describes the potential of a disease in a totally susceptible population, the effective reproduction number ($R_e$) accounts for the actual state of the population at time $t$. Using our normalized variables:
+
+$$R_e = R_0 \cdot s(t)$$
+
+At the very beginning of the outbreak, $s(0) = 1$, while the effective reproduction number is $R_{e, initial} = R_0$. However, if the succeptible population is $s = \eta$, the effective reproductive number if $R_e = R_0 \eta$, the disease-free equilibrium is unstable if $R_e = R_0 \eta > 1$, meaning that the condition for an ourbrake is $R_0 > 1/\eta$. That is, the presence of immune individuals (represented by $1 - \eta$) prevents the infection from spreading, even if the disease itself is highly contagious.
+
+Herd immunity is the state where the susceptible fraction is low enough that $R_e < 1$. To prevent an outbreak from ever starting, we must ensure that the initial susceptible fraction $\eta$ is below a specific threshold. The condition for the disease to die out immediately is:
+
+$$R_0 \eta < 1 \implies \eta < \frac{1}{R_0}$$
+
+The herd immunity threshold ($p_c$) is the fraction of the population that must be immune ($1 - 1/R_0$) to satisfy this condition. 
+
+Physical InterpretationThe interplay between $R_0$ and $\eta$ tells us two critical things about the outbreak's fate:
+
+* If $\eta > 1/R_0$: The population is "sub-critical." The density of susceptible individuals is high enough that each infected person successfully infects more than one other person. The infection will grow exponentially.
+* If $\eta < 1/R_0$: The population has reached herd immunity. Even if an infected person enters the population, they will, on average, encounter so many immune individuals that they will infect fewer than one person before recovering. The "spark" of infection fails to catch fire.
+
+In summary, $\eta$ is the "fuel" available for the epidemic. If the fuel level is below the inverse of the disease's "burn rate" ($1/R_0$), the fire cannot be sustained.
+
+## Discussion
+In this chapter, we developed and analyzed a simplified SIR model that ignores demographic fluxes to describe the spread and short-term dynamics of an infectious disease over the initial stages of an outbreak. By formulating the model as a system of ordinary differential equations and non-dimensionalizing variables, we were able to characterize key features of outbreak behavior depending on epidemiological parameters like the basic reproduction number $R_0$.
+
+Analysis of the disease-free steady states revealed that outbreaks occur when $R_0$ exceeds the threshold value of 1. Linearization near the disease-free state then allowed quantification of initial growth or decay depending on stability criteria. These findings aligned with epidemiological theory regarding outbreak potential based on the expected number of secondary cases produced in a fully susceptible population.
+
+Going beyond stability analysis, we also explored outbreak profiles by examining the forces governing changes in compartment sizes over time. This elucidated the competing influences of new infections versus recoveries on the infectious class. It was shown that outbreaks arise due to an initial influx domination but wane once recovery outpaces transmission as susceptibility decreases.
+
+Overall, the simplified SIR model provided valuable insights into the intrinsic infection dynamics driving temporal changes in prevalence over an outbreak timescale. Both analytical and numerical approaches complemented each other to strengthen understanding. It demonstrates how even highly idealized models can offer meaningful public health insights when paired with epidemiological context.
+
+## Exercises
+1. Numerically solve the simplified SIR model using various combinations of parameter values. Ensure to verify that all sets of parameters for which $R_0 > 1$ result in epidemic outbreaks.
+  
+2. Numerically solve the simplified SIR model using parameter values such that $R_0 > 1$. Plot the number of recovered patients at the end of the outbreak vs. $R_0$. Discuss the results.
+  
+3. Consider a viral disease in which individuals remain infected and contagious for a period of 2 weeks. The disease causes virtually no fatalities, but there is neither a cure nor a vaccine. The basic reproduction number of the disease is 6. Assume that an epidemic begins, and health authorities start to act when 0.1% of the population is infected. The only available measure is lockdowns, which incur economic costs proportional to their duration. Design a strategy that allows for achieving herd immunity while minimizing the costs of lockdown, without allowing more than 5% of the population to be infected simultaneously.
+  
+
+  
