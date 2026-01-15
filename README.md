@@ -2,9 +2,7 @@
 
 This book is designed as a textbook for a mathematical biology course, though it also serves as a concise reference for anyone interested in the subject.
 
-## License
-This work is published under a **CC BY (Attribution)** license.
+**Status:** Under review (Springer)
 
-## Access the Book
-You can access the full content of the book at the following website:
+**Access:** The book can be read online at the following website:
 **[moises-santillan.github.io/MathBiol-Book](https://moises-santillan.github.io/MathBiol-Book)**
